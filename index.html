@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Perfect Match | 1O1O x Artisenses</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Branding Colors */
+            --rose-gold: #B76E79;
+            --soft-pink: #FFF0F5;
+            --deep-red: #800020; 
+            --text-main: #4A3B3E;
+            --white-glass: rgba(255, 255, 255, 0.96);
+            --shadow-soft: 0 10px 40px rgba(183, 110, 121, 0.15);
+            --transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe6e9 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .app-container {
+            width: 100%;
+            max-width: 560px;
+            min-height: 100vh;
+            background: var(--white-glass);
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-soft);
+        }
+
+        @media (min-width: 600px) {
+            .app-container {
+                min-height: 90vh;
+                height: 90vh;
+                border-radius: 24px;
+                margin: 20px;
+            }
+        }
+
+        /* Header */
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.9);
+            border-bottom: 1px solid rgba(183, 110, 121, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-text-prefix {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #000; 
+        }
+
+        .logo-img {
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .divider {
+            font-size: 1rem;
+            color: #ccc;
+            margin: 0 5px;
+            display: none; /* Hidden as requested */
+        }
+
+        .logo-artisenses {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .lang-switch {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border: 1px solid var(--rose-gold);
+            color: var(--rose-gold);
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Pages */
+        .page {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            padding: 30px;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .page.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero */
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: var(--deep-red);
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* Form */
+        .input-group { margin-bottom: 25px; text-align: left; }
+        .input-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--rose-gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            background: #fff;
+            transition: var(--transition);
+        }
+        input:focus, select:focus {
+            border-color: var(--deep-red);
+            box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.05);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        input[type="radio"] {
+            accent-color: var(--deep-red);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Buttons */
+        .cta-btn {
+            background: linear-gradient(135deg, var(--rose-gold), #c0808a);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
+        }
+        .cta-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+        .cta-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--rose-gold);
+            color: var(--rose-gold);
+            box-shadow: none;
+        }
+
+        /* Result Card */
+        .result-header { text-align: center; margin-bottom: 30px; }
+        .user-name-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--deep-red);
+            margin-bottom: 5px;
+        }
+        
+        .content-block {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(183,110,121,0.2);
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .block-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--rose-gold);
+            margin-bottom: 15px;
+            display: block;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .meaning-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Perfume Display */
+        .product-item {
+            text-align: center;
+            padding: 10px;
+        }
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--deep-red);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .product-desc {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .product-meta {
+            font-size: 0.9rem;
+            color: #888;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .meta-row {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: baseline;
+        }
+        .meta-label {
+            font-weight: 600;
+            color: var(--rose-gold);
+            margin-right: 8px;
+            min-width: 60px;
+        }
+        .meta-value {
+            color: #555;
+        }
+        
+        .pickup-code-box {
+            background: #fdf5f6;
+            border: 2px dashed var(--rose-gold);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pickup-code {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--deep-red);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 5px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-top: 30px;
+        }
+
+        /* Loading */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(183, 110, 121, 0.3);
+            border-top-color: var(--deep-red);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo-wrapper">
+                <span class="logo-text-prefix">1O1O X </span>
+                <img src="image_3c5be7.png" alt="1O1O Logo" class="logo-img" onerror="this.style.display='none'">
+                <!-- Divider Removed -->
+                <span class="logo-artisenses">ARTISENSES</span>
+            </div>
+            <div class="lang-switch" onclick="toggleLanguage()">EN / 中</div>
+        </header>
+
+        <!-- PAGE 1: HOME -->
+        <div id="page-home" class="page active">
+            <div class="hero-section">
+                <div style="font-size: 3rem; color: var(--rose-gold); margin-bottom: 20px;">
+                    <i class="fa-solid fa-spray-can-sparkles"></i>
+                </div>
+                <h1 class="hero-title" data-i18n="hero_title">Valentine's Limited<br>AI Perfect Match</h1>
+                <p class="hero-desc" data-i18n="hero_desc">
+                    1O1O聯乘法國第五感調香學院（香港分校）Artisenses<br>
+                    讓您為摯愛送上專屬Perfect Match 香水
+                </p>
+            </div>
+            <button class="cta-btn" onclick="nextPage('page-input')">
+                <span data-i18n="btn_start">Start Blending</span>
+            </button>
+        </div>
+
+        <!-- PAGE 2: INPUT -->
+        <div id="page-input" class="page">
+            <div class="input-group">
+                <label class="input-label"><span data-i18n="label_name_zh">Chinese Name</span> <span style="color:red">*</span></label>
+                <input type="text" id="chineseName" placeholder="e.g. 陳大文">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label"><span data-i18n="label_gender">Gender</span> <span style="color:red">*</span></label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="M"> <span data-i18n="gender_m">Male</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="F"> <span data-i18n="gender_f">Female</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="label_birth">Birthday</label>
+                <div style="display:flex; gap:15px;">
+                    <select id="birthMonth" onchange="updateDays()"></select>
+                    <select id="birthDay"></select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="label_location">Activity Location</label>
+                <select id="activityLocation">
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+
+            <div style="flex:1"></div>
+
+            <button class="cta-btn" onclick="processCalculation()">
+                <span data-i18n="btn_analyze">Reveal Destiny</span>
+            </button>
+        </div>
+
+        <!-- PAGE 3: LOADING - HIDDEN LOGICALLY BUT KEPT IN DOM FOR STRUCTURE -->
+        <div id="page-loading" class="page loading-container" style="display:none;">
+            <div class="spinner"></div>
+            <p style="font-size:1rem; color:#888; letter-spacing:1px;" data-i18n="loading_msg">Customizing Formula...</p>
+        </div>
+
+        <!-- PAGE 4: RESULT -->
+        <div id="page-result" class="page">
+            <div class="result-header">
+                <h1 class="user-name-display" id="res-name">User</h1>
+            </div>
+
+            <!-- Scent Meaning (Replaces Personality) -->
+            <div class="content-block">
+                <span class="block-title" data-i18n="title_meaning">Scent Meaning</span>
+                <div id="res-meaning" class="meaning-text"></div>
+            </div>
+
+            <!-- Single Result (No A/B) -->
+            <div class="content-block">
+                <span class="block-title" data-i18n="title_formula">Perfect Match Formula</span>
+                <div id="res-product">
+                    <!-- Product Content -->
+                </div>
+            </div>
+
+            <!-- Confirm Button -->
+            <button class="cta-btn" id="btn-confirm" onclick="confirmSelection()">
+                <span data-i18n="btn_confirm">Confirm & Get Code</span>
+            </button>
+
+            <!-- T&C -->
+            <div class="footer-note" data-i18n="terms_text">All information provided is for reference only.</div>
+
+            <!-- Restart Button -->
+            <button class="cta-btn secondary" onclick="resetApp()" style="margin-top:10px;">
+                <span data-i18n="btn_restart">Start Over</span>
+            </button>
+        </div>
+
+        <!-- PAGE 5: SUCCESS -->
+        <div id="page-success" class="page" style="justify-content:center; align-items:center; text-align:center;">
+            <div style="font-size: 4rem; color: #4CAF50; margin-bottom: 20px;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 style="font-family:'Playfair Display'; color:var(--deep-red); font-size:2rem; margin-bottom:10px;" data-i18n="thank_you">Thank You!</h2>
+            
+            <p style="font-size:1rem; color:#666;" data-i18n="pickup_label">Your Pickup Code:</p>
+            <div class="pickup-code-box">
+                <div class="pickup-code" id="final-code">000</div>
+            </div>
+            
+            <p style="font-size:0.9rem; color:#999;" data-i18n="success_note">Please show this code to our staff.</p>
+            
+            <button class="cta-btn secondary" onclick="resetApp()" style="margin-top:40px;">
+                <span data-i18n="btn_home">Back to Home</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // !!! PASTE YOUR GOOGLE WEB APP URL HERE !!!
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqY0N1isGOn_NmLT4MckCZPjpGFTD8RxrmTu3ggthEHL5eQ8j1--oBpn5Q7QhAbVdM_g/exec"; 
+        
+        let currentLang = 'zh';
+        let lastResult = null;
+
+        // --- DATA ---
+        const locations = [
+            { id: "TKO", zh: "1O1O Center 將軍澳", en: "1O1O Center (Popcorn Store)" },
+            { id: "ST", zh: "1O1O Center 沙田店", en: "1O1O Center (Sha Tin Store)" },
+            { id: "TST", zh: "1O1O Center 尖沙咀店", en: "1O1O Center (Tsim Sha Tsui Store)" }
+        ];
+
+        // UPDATED PERFUME DATABASE
+        const perfumeDatabase = [
+            {
+                id: "p1",
+                gender: "F",
+                name_en: "A. Bamboo Rose Veil", name_zh: "A. Bamboo Rose Veil",
+                desc_en: "A soft, airy rose wrapped in fresh green dew. Honeyed Bulgarian rose and lychee melt into crisp green grass and cool mist for an elegant, romantic finish.",
+                desc_zh: "清新露水包裹住柔美玫瑰。甜美嘅保加利亞玫瑰同荔枝香氣，融合清新青草同晨霧感覺，優雅又浪漫，輕盈不厚重。",
+                blend_en: "75% Bulgarian Rose | 25% Bamboo Mist", blend_zh: "75% 保加利亞玫瑰｜25% 竹霧青草",
+                color_en: "Soft blush pink with fresh green", color_zh: "柔和粉紅配清新綠色",
+                pers_en: "Gentle • Graceful • Effortlessly elegant", pers_zh: "溫柔 • 優雅 • 自然迷人",
+                meaning_en: "Gentle • Graceful • Effortlessly elegant", meaning_zh: "溫柔 • 優雅 • 自然迷人"
+            },
+            {
+                id: "p2",
+                gender: "F",
+                name_en: "B. Rosewood Serenity", name_zh: "B. Rosewood Serenity",
+                desc_en: "Fresh green calm with a touch of rose. Dewy grass and bamboo air lead, softened by delicate rose, lychee, and honey for a clean, soothing experience.",
+                desc_zh: "清新綠意中帶住淡淡玫瑰香。青草與晨霧率先展開，再慢慢透出玫瑰、荔枝同蜂蜜甜香，感覺乾淨又放鬆。",
+                blend_en: "75% Bamboo Mist | 25% Bulgarian Rose", blend_zh: "75% 竹霧青草｜25% 保加利亞玫瑰",
+                color_en: "Light misty green", color_zh: "淡霧綠色",
+                pers_en: "Peaceful • Grounded • Quietly confident", pers_zh: "平靜 • 穩重 • 低調自信",
+                meaning_en: "Peaceful • Grounded • Quietly confident", meaning_zh: "平靜 • 穩重 • 低調自信"
+            },
+            {
+                id: "p3",
+                gender: "F",
+                name_en: "C. Oud Rose Royale", name_zh: "C. Oud Rose Royale",
+                desc_en: "Luxurious rose warmed by golden spice. Rich rose oils and honeyed lychee glow against saffron spiced oud for a bold, sensual impression.",
+                desc_zh: "華麗玫瑰融合溫暖香料氣息。濃郁玫瑰油配上甜美荔枝，再加入藏紅花辛香嘅金色沉香，性感而高貴。",
+                blend_en: "75% Bulgarian Rose | 25% Golden Oud", blend_zh: "75% 保加利亞玫瑰｜25% 金色沉香",
+                color_en: "Deep rose red with warm gold", color_zh: "深玫瑰紅配暖金色",
+                pers_en: "Confident • Expressive • Captivating", pers_zh: "自信 • 大膽 • 迷人吸引",
+                meaning_en: "Confident • Expressive • Captivating", meaning_zh: "自信 • 大膽 • 迷人吸引"
+            },
+            {
+                id: "p4",
+                gender: "F",
+                name_en: "D. Velvet Oud Bloom", name_zh: "D. Velvet Oud Bloom",
+                desc_en: "Smooth spice softened by floral depth. Golden saffron and warm spices unfold into velvety rose, refined and quietly powerful.",
+                desc_zh: "溫潤辛香中透出柔滑花香。藏紅花與溫暖香料為主調，再被天鵝絨般嘅玫瑰柔化，成熟而有力量。",
+                blend_en: "75% Golden Oud | 25% Bulgarian Rose", blend_zh: "75% 金色沉香｜25% 保加利亞玫瑰",
+                color_en: "Warm amber", color_zh: "溫暖琥珀色",
+                pers_en: "Sophisticated • Composed • Quietly powerful", pers_zh: "成熟 • 冷靜 • 內斂強大",
+                meaning_en: "Sophisticated • Composed • Quietly powerful", meaning_zh: "成熟 • 冷靜 • 內斂強大"
+            },
+            {
+                id: "p5",
+                gender: "M", 
+                name_en: "E. Bamboo Oud Horizon", name_zh: "E. Bamboo Oud Horizon",
+                desc_en: "Fresh green clarity meets gentle spice. Cool dewy grass opens the scent, grounded by soft saffron warmth for a modern, clean finish.",
+                desc_zh: "清爽綠意配合溫柔辛香。清晨青草與霧氣作開端，後調帶出淡淡藏紅花溫暖感，簡約而現代。",
+                blend_en: "75% Bamboo Mist | 25% Golden Oud", blend_zh: "75% 竹霧青草｜25% 金色沉香",
+                color_en: "Soft sage green", color_zh: "柔和鼠尾草綠",
+                pers_en: "Clean cut • Thoughtful • Modern minimalist", pers_zh: "乾淨俐落 • 沉穩 • 現代感",
+                meaning_en: "Clean cut • Thoughtful • Modern minimalist", meaning_zh: "乾淨俐落 • 沉穩 • 現代感"
+            },
+            {
+                id: "p6",
+                gender: "M",
+                name_en: "F. Smoked Bamboo Oud", name_zh: "F. Smoked Bamboo Oud",
+                desc_en: "Deep spice sharpened by fresh green air. Glowing saffron and warm spice are lifted by crisp grass and mist, bold yet balanced.",
+                desc_zh: "濃郁辛香被清新綠意提亮。藏紅花與溫暖香料為主體，加上青草同霧氣清新感，強烈但不壓迫。",
+                blend_en: "75% Golden Oud | 25% Bamboo Mist", blend_zh: "75% 金色沉香｜25% 竹霧青草",
+                color_en: "Dark smoky gold", color_zh: "深煙燻金色",
+                pers_en: "Strong • Decisive • Commanding", pers_zh: "強而有力 • 果斷 • 氣場十足",
+                meaning_en: "Strong • Decisive • Commanding", meaning_zh: "強而有力 • 果斷 • 氣場十足"
+            }
+        ];
+
+        const i18n = {
+            zh: {
+                hero_title: "情人節限定<br>AI Perfect Match",
+                hero_desc: "1O1O聯乘法國第五感調香學院（香港分校）Artisenses<br>讓您為摯愛送上專屬Perfect Match 香水",
+                btn_start: "開始調製香水",
+                input_title: "1O1O X ARTISENSES",
+                label_name_zh: "中文姓名",
+                label_gender: "性別",
+                label_birth: "出生日期",
+                label_location: "活動地點",
+                gender_m: "男",
+                gender_f: "女",
+                btn_analyze: "AI 智能分析",
+                title_meaning: "香氣寓意",
+                title_formula: "專屬配方",
+                btn_restart: "重新生成",
+                btn_confirm: "確認並獲取編號",
+                footer_note: "自選香味請向現場活動人員查詢。",
+                terms_text: "本平台所提供之所有資訊僅供參考。",
+                thank_you: "謝謝您的參與！",
+                pickup_label: "您的取件編號：",
+                success_note: "請向現場工作人員出示此編號。",
+                btn_home: "返回首頁",
+                loading_msg: "正在為您調製...",
+                lbl_ratio: "比例:",
+                lbl_color: "色調:",
+                lbl_pers: "性格:",
+            },
+            en: {
+                hero_title: "Valentine's Limited<br>AI Perfect Match",
+                hero_desc: "1O1O x Artisenses (HK)<br>Gift your loved one a perfect bespoke scent match.",
+                btn_start: "Start Blending",
+                input_title: "1O1O X ARTISENSES",
+                label_name_zh: "Chinese Name",
+                label_gender: "Gender",
+                label_birth: "Birth Date",
+                label_location: "Activity Location",
+                gender_m: "Male",
+                gender_f: "Female",
+                btn_analyze: "AI Analyze",
+                title_meaning: "Scent Meaning",
+                title_formula: "Your Formula",
+                btn_restart: "Start Over",
+                btn_confirm: "Confirm & Get Code",
+                footer_note: "Please ask staff for custom scent options.",
+                terms_text: "All information provided is for reference only.",
+                thank_you: "Thank You!",
+                pickup_label: "Your Pickup Code:",
+                success_note: "Please show this code to our staff.",
+                btn_home: "Back to Home",
+                loading_msg: "Customizing Formula...",
+                lbl_ratio: "Blend:",
+                lbl_color: "Color Tone:",
+                lbl_pers: "Personality:",
+            }
+        };
+
+        // --- INIT ---
+        window.onload = function() {
+            initDateSelectors();
+            initLocationSelector();
+            updateLanguage();
+        };
+
+        function initDateSelectors() {
+            const monthSel = document.getElementById('birthMonth');
+            for(let i=1; i<=12; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.text = i;
+                monthSel.add(opt);
+            }
+            updateDays();
+        }
+
+        function updateDays() {
+            const month = parseInt(document.getElementById('birthMonth').value) || 1;
+            const daySel = document.getElementById('birthDay');
+            daySel.innerHTML = ''; 
+            let daysInMonth = 31;
+            if([4,6,9,11].includes(month)) daysInMonth = 30;
+            if(month === 2) daysInMonth = 29;
+            for(let i=1; i<=daysInMonth; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.text = i;
+                daySel.add(opt);
+            }
+        }
+
+        function initLocationSelector() {
+            const locSel = document.getElementById('activityLocation');
+            locations.forEach(loc => {
+                let opt = document.createElement('option');
+                opt.value = loc.id;
+                locSel.add(opt);
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguage();
+            if(lastResult && document.getElementById('page-result').classList.contains('active')) {
+                renderResult(lastResult);
+            }
+        }
+
+        function updateLanguage() {
+            const texts = i18n[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(texts[key]) el.innerHTML = texts[key];
+            });
+
+            const locSel = document.getElementById('activityLocation');
+            Array.from(locSel.options).forEach((opt) => {
+                const locData = locations.find(l => l.id === opt.value);
+                if(locData) opt.text = currentLang === 'zh' ? locData.zh : locData.en;
+            });
+        }
+
+        function nextPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function resetApp() {
+            document.getElementById('chineseName').value = '';
+            const radios = document.getElementsByName('gender');
+            radios.forEach(r => r.checked = false);
+            document.getElementById('birthMonth').selectedIndex = 0;
+            updateDays();
+            lastResult = null;
+            document.getElementById('btn-confirm').disabled = false;
+            document.getElementById('btn-confirm').innerHTML = `<span data-i18n="btn_confirm">${i18n[currentLang].btn_confirm}</span>`;
+            nextPage('page-home');
+        }
+
+        // --- CORE LOGIC ---
+        function processCalculation() {
+            // No English name input
+            const nameEn = ""; 
+            const nameZh = document.getElementById('chineseName').value.trim();
+            const month = parseInt(document.getElementById('birthMonth').value);
+            const day = parseInt(document.getElementById('birthDay').value);
+            const locId = document.getElementById('activityLocation').value;
+            
+            const genderEl = document.querySelector('input[name="gender"]:checked');
+
+            if(!nameZh || !genderEl) {
+                alert(currentLang === 'zh' ? "請填寫所有必填欄位 (姓名、性別)。" : "Please fill in all required fields (Name, Gender).");
+                return;
+            }
+
+            const gender = genderEl.value;
+
+            // Direct calculation without loading page
+            calculateAndShow(nameEn, nameZh, gender, month, day, locId);
+        }
+
+        function calculateAndShow(nameEn, nameZh, gender, month, day, locId) {
+            // 1. Five Elements Logic (Hidden calculation)
+            let birthElement = '';
+            if (month >= 2 && month <= 4) birthElement = 'wood';
+            else if (month >= 5 && month <= 7) birthElement = 'fire';
+            else if (month >= 8 && month <= 10) birthElement = 'metal';
+            else birthElement = 'water';
+            if ((month===4||month===7||month===10||month===1) && day > 18) birthElement = 'earth';
+
+            // 2. Select Perfume based on Gender
+            // Filter database
+            let availablePerfumes = perfumeDatabase.filter(p => p.gender === gender);
+            // Fallback to all if somehow empty
+            if(availablePerfumes.length === 0) availablePerfumes = perfumeDatabase;
+
+            // Randomly pick ONE
+            const randomPerfume = availablePerfumes[Math.floor(Math.random() * availablePerfumes.length)];
+
+            // Resolve location name
+            const locObj = locations.find(l => l.id === locId);
+            
+            lastResult = {
+                nameEn: nameEn, // Will be empty string
+                nameZh,
+                gender,
+                birthDate: `${month}/${day}`,
+                birthElement, // Stored but not shown
+                perfume: randomPerfume,
+                locationZh: locObj ? locObj.zh : locId,
+                locationEn: locObj ? locObj.en : locId
+            };
+
+            renderResult(lastResult);
+            nextPage('page-result');
+        }
+
+        function renderResult(data) {
+            // Display Chinese name as the user name
+            document.getElementById('res-name').innerText = data.nameZh;
+            
+            const p = data.perfume;
+            const pName = currentLang === 'zh' ? p.name_zh : p.name_en;
+            const pDesc = currentLang === 'zh' ? p.desc_zh : p.desc_en;
+            const pBlend = currentLang === 'zh' ? p.blend_zh : p.blend_en;
+            const pColor = currentLang === 'zh' ? p.color_zh : p.color_en;
+            const pPers = currentLang === 'zh' ? p.pers_zh : p.pers_en;
+            const pMeaning = currentLang === 'zh' ? p.meaning_zh : p.meaning_en;
+            
+            // Labels
+            const lblRatio = i18n[currentLang].lbl_ratio;
+            const lblColor = i18n[currentLang].lbl_color;
+            const lblPers = i18n[currentLang].lbl_pers;
+
+            // Render Meaning (Scent Meaning)
+            document.getElementById('res-meaning').innerHTML = `"${pMeaning}"`;
+
+            // Render Product
+            document.getElementById('res-product').innerHTML = `
+                <div class="product-item">
+                    <span class="product-name">${pName}</span>
+                    <span class="product-desc">${pDesc}</span>
+                    <div class="product-meta">
+                        <div class="meta-row">
+                            <span class="meta-label">${lblRatio}</span>
+                            <span class="meta-value">${pBlend}</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">${lblColor}</span>
+                            <span class="meta-value">${pColor}</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">${lblPers}</span>
+                            <span class="meta-value">${pPers}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function confirmSelection() {
+            if(!lastResult) return;
+
+            const btn = document.getElementById('btn-confirm');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            const locationStr = currentLang === 'zh' ? lastResult.locationZh : lastResult.locationEn;
+            const perfumeName = currentLang === 'zh' ? lastResult.perfume.name_zh : lastResult.perfume.name_en;
+
+            const payload = {
+                name_en: "",
+                name_zh: lastResult.nameZh,
+                gender: lastResult.gender,
+                birth: lastResult.birthDate,
+                scent: perfumeName,
+                element: lastResult.birthElement, // sending hidden element data for record
+                location: locationStr
+            };
+
+            submitToGoogleSheet(payload, btn, originalText);
+        }
+
+        function submitToGoogleSheet(data, btn, originalText) {
+            if(!GOOGLE_SCRIPT_URL) {
+                console.warn("No Google Script URL. Simulating success.");
+                setTimeout(() => { showSuccessPage("999"); }, 1000);
+                return;
+            }
+
+            const url = `${GOOGLE_SCRIPT_URL}?name_en=${encodeURIComponent(data.name_en)}&name_zh=${encodeURIComponent(data.name_zh)}&gender=${encodeURIComponent(data.gender)}&birth=${encodeURIComponent(data.birth)}&scent=${encodeURIComponent(data.scent)}&element=${encodeURIComponent(data.element)}&location=${encodeURIComponent(data.location)}`;
+
+            fetch(url, { method: "GET" })
+            .then(response => response.json())
+            .then(result => {
+                if(result.result === 'success') {
+                    showSuccessPage(result.id); 
+                } else {
+                    console.error("Script Error:", result.error);
+                    showSuccessPage("Error-999"); 
+                }
+            })
+            .catch(error => {
+                console.error("Fetch Error:", error);
+                // Fallback for demo/error
+                showSuccessPage("Offline-001"); 
+            });
+        }
+
+        function showSuccessPage(code) {
+            document.getElementById('final-code').innerText = code;
+            nextPage('page-success');
+        }
+    </script>
+</body>
+</html>
