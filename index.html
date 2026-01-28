@@ -15,14 +15,18 @@
 
     <style>
         :root {
-            /* Branding Colors */
-            --rose-gold: #B76E79;
-            --soft-pink: #FFF0F5;
-            --deep-red: #800020; 
-            --text-main: #4A3B3E;
-            --white-glass: rgba(255, 255, 255, 0.96);
-            --shadow-soft: 0 10px 40px rgba(183, 110, 121, 0.15);
-            --transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Deeper Rose Gold Theme */
+            --bg-gradient-start: #eacda3; 
+            --bg-gradient-end: #d6ae7b;   
+            --card-bg: rgba(255, 255, 255, 0.75); /* Frosted Glass */
+            --primary-rose: #A65E68;      /* Deep Rose Red */
+            --deep-rose: #803D46;         /* Darker Accent */
+            --text-main: #4a4a4a;         /* Charcoal */
+            --text-gold: #B76E79;
+            --border-color: rgba(166, 94, 104, 0.3);
+            --input-bg: rgba(255, 255, 255, 0.6);
+            
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -34,13 +38,31 @@
 
         body {
             font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
-            background: linear-gradient(135deg, #fff0f3 0%, #ffe6e9 100%);
+            background: linear-gradient(135deg, #ebd4d8 0%, #cfaaaf 100%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Image with Transparency */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('FragranceRetail.png'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3; 
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: overlay;
         }
 
         /* Container */
@@ -48,20 +70,23 @@
             width: 100%;
             max-width: 560px;
             min-height: 100vh;
-            background: var(--white-glass);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: relative;
             z-index: 1;
             overflow-y: auto;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
         }
 
         @media (min-width: 600px) {
             .app-container {
                 min-height: 90vh;
                 height: 90vh;
+                border: 1px solid rgba(255, 255, 255, 0.4);
                 border-radius: 24px;
                 margin: 20px;
             }
@@ -71,58 +96,28 @@
         header {
             padding: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end; 
             align-items: center;
-            background: rgba(255,255,255,0.9);
-            border-bottom: 1px solid rgba(183, 110, 121, 0.1);
+            background: rgba(255,255,255,0.4);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo-text-prefix {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #000; 
-        }
-
-        .logo-img {
-            height: 28px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .divider {
-            font-size: 1rem;
-            color: #ccc;
-            margin: 0 5px;
-            display: none; /* Hidden as requested */
-        }
-
-        .logo-artisenses {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            color: var(--text-main);
-            text-transform: uppercase;
-        }
-
         .lang-switch {
             font-size: 0.75rem;
-            padding: 4px 10px;
-            border: 1px solid var(--rose-gold);
-            color: var(--rose-gold);
+            padding: 4px 12px;
+            border: 1px solid var(--primary-rose);
+            color: var(--primary-rose);
             border-radius: 20px;
             cursor: pointer;
-            white-space: nowrap;
+            transition: var(--transition);
+            background: rgba(255,255,255,0.9);
+        }
+        .lang-switch:hover {
+            background: var(--primary-rose);
+            color: white;
         }
 
         /* Pages */
@@ -130,18 +125,19 @@
             flex: 1;
             display: none;
             flex-direction: column;
-            padding: 30px;
+            padding: 30px 40px;
             animation: fadeIn 0.6s ease-out forwards;
         }
 
+        /* FIX: Ensure flex display only when active */
         .page.active { display: flex; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hero */
+        /* Hero Section */
         .hero-section {
             flex: 1;
             display: flex;
@@ -150,49 +146,86 @@
             text-align: center;
         }
 
+        .hero-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .hero-logo-prefix {
+             font-family: 'Montserrat', sans-serif;
+             font-weight: 600;
+             font-size: 1.2rem;
+             color: #333;
+        }
+
+        .hero-logo-img {
+            height: 35px;
+            width: auto;
+        }
+
+        .hero-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #333;
+        }
+
         .hero-title {
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             line-height: 1.3;
             margin-bottom: 20px;
-            color: var(--deep-red);
+            color: var(--deep-rose);
+            text-shadow: 0 2px 10px rgba(255,255,255,0.5);
         }
 
         .hero-desc {
             font-size: 1rem;
-            line-height: 1.6;
-            color: #666;
+            line-height: 1.8;
+            color: var(--text-main);
             margin-bottom: 40px;
         }
 
-        /* Form */
+        /* Form Elements */
         .input-group { margin-bottom: 25px; text-align: left; }
+        
         .input-label {
             display: block;
             font-size: 0.9rem;
-            color: var(--rose-gold);
+            color: var(--primary-rose);
             margin-bottom: 8px;
             font-weight: 600;
+            letter-spacing: 1px;
         }
         
         input[type="text"], select {
             width: 100%;
             padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 1px solid rgba(183, 110, 121, 0.3);
+            border-radius: 12px;
             font-size: 1rem;
             outline: none;
-            background: #fff;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-family: inherit;
             transition: var(--transition);
         }
+        
         input:focus, select:focus {
-            border-color: var(--deep-red);
-            box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.05);
+            border-color: var(--primary-rose);
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(183, 110, 121, 0.1);
         }
 
+        /* Radio Buttons */
         .radio-group {
             display: flex;
-            gap: 20px;
+            gap: 25px;
+            padding-top: 5px;
         }
         .radio-label {
             display: flex;
@@ -200,156 +233,192 @@
             gap: 8px;
             font-size: 1rem;
             cursor: pointer;
+            color: var(--text-main);
         }
         input[type="radio"] {
-            accent-color: var(--deep-red);
+            accent-color: var(--primary-rose);
             width: 18px;
             height: 18px;
         }
 
         /* Buttons */
         .cta-btn {
-            background: linear-gradient(135deg, var(--rose-gold), #c0808a);
+            background: linear-gradient(135deg, #c78d96, #a65e68);
             color: white;
-            border: none;
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 18px;
             border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
+            margin-top: 25px;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(166, 94, 104, 0.25);
         }
-        .cta-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
-        .cta-btn.secondary {
-            background: transparent;
-            border: 1px solid var(--rose-gold);
-            color: var(--rose-gold);
+        .cta-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(166, 94, 104, 0.35);
+            filter: brightness(1.05);
+        }
+        .cta-btn:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
             box-shadow: none;
+            border: none;
         }
 
-        /* Result Card */
-        .result-header { text-align: center; margin-bottom: 30px; }
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.5);
+            border: 1px solid var(--primary-rose);
+            color: var(--primary-rose);
+            box-shadow: none;
+            margin-top: 15px;
+        }
+        .cta-btn.secondary:hover {
+            background: #fff;
+        }
+
+        /* Result Page */
+        .result-header { text-align: center; margin-bottom: 35px; }
         .user-name-display {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--deep-red);
-            margin-bottom: 5px;
-        }
-        
-        .content-block {
-            background: #fff;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(183,110,121,0.2);
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            font-size: 2.8rem;
+            color: var(--deep-rose);
+            margin-bottom: 10px;
         }
 
+        /* Content Blocks */
+        .content-block {
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.6);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        
         .block-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--rose-gold);
+            color: var(--primary-rose);
             margin-bottom: 15px;
             display: block;
-            border-bottom: 1px dashed #eee;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--border-color);
             padding-bottom: 10px;
         }
 
         .meaning-text {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #555;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #4a4a4a;
+            text-align: center;
             font-style: italic;
         }
 
-        /* Perfume Display */
+        /* Product Card */
         .product-item {
             text-align: center;
-            padding: 10px;
         }
         .product-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.6rem;
-            color: var(--deep-red);
+            color: var(--deep-rose);
             margin-bottom: 10px;
             display: block;
         }
         .product-desc {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #666;
-            margin-bottom: 15px;
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
+        
         .product-meta {
-            font-size: 0.9rem;
-            color: #888;
-            background: #fafafa;
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px;
             padding: 15px;
-            border-radius: 8px;
+            font-size: 0.9rem;
             text-align: left;
         }
         .meta-row {
-            margin-bottom: 8px;
             display: flex;
-            align-items: baseline;
-        }
-        .meta-label {
-            font-weight: 600;
-            color: var(--rose-gold);
-            margin-right: 8px;
-            min-width: 60px;
-        }
-        .meta-value {
+            margin-bottom: 8px;
             color: #555;
         }
-        
-        .pickup-code-box {
-            background: #fdf5f6;
-            border: 2px dashed var(--rose-gold);
-            padding: 20px;
-            border-radius: 12px;
+        .meta-label {
+            min-width: 70px;
+            color: var(--primary-rose);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer-note, .terms-note {
             text-align: center;
-            margin: 20px 0;
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 15px;
+        }
+        .terms-note {
+            text-align: justify;
+            font-size: 0.65rem;
+            color: #aaa;
+            margin: 20px 0 10px;
+            line-height: 1.4;
+        }
+
+        /* Success Page */
+        .pickup-code-box {
+            border: 2px dashed var(--primary-rose);
+            padding: 30px;
+            margin: 30px 0;
+            background: #fff;
+            border-radius: 12px;
+            width: 100%;
         }
         .pickup-code {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--deep-red);
             font-family: 'Montserrat', sans-serif;
-            letter-spacing: 5px;
+            font-size: 3.5rem;
+            color: var(--deep-rose);
+            letter-spacing: 4px;
+            font-weight: 700;
         }
 
-        .footer-note {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-top: 30px;
-        }
-
-        /* Loading */
+        /* Loading Spinner & Container */
+        /* FIX: Removed display:flex so it hides properly when page inactive */
         .loading-container {
-            display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
             text-align: center;
+            min-height: 60vh;
         }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(183, 110, 121, 0.3);
-            border-top-color: var(--deep-red);
-            border-radius: 50%;
-            animation: spin 1s infinite linear;
-            margin-bottom: 20px;
+
+        /* Perfume Loader Animation */
+        .perfume-loader-container {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            margin: 0 auto 25px;
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .perfume-bottle { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50px; height: 60px; background: rgba(183, 110, 121, 0.1); border: 2px solid var(--rose-gold); border-radius: 10px 10px 20px 20px; z-index: 2; }
+        .perfume-bottle::before { content: ''; position: absolute; bottom: 4px; left: 4px; right: 4px; height: 35px; background: rgba(183, 110, 121, 0.3); border-radius: 0 0 12px 12px; animation: liquidMove 2s infinite ease-in-out; }
+        .perfume-cap { position: absolute; bottom: 65px; left: 50%; transform: translateX(-50%); width: 20px; height: 15px; background: var(--deep-red); border-radius: 3px; z-index: 2; }
+        .spray-nozzle { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: #aaa; border-radius: 50%; }
+        .heart-particle { position: absolute; bottom: 85px; left: 50%; font-size: 12px; color: var(--rose-gold); opacity: 0; animation: sprayHearts 1.5s infinite linear; }
+        .hp-1 { animation-delay: 0s; transform: translateX(-12px); }
+        .hp-2 { animation-delay: 0.5s; transform: translateX(0px) scale(1.2); }
+        .hp-3 { animation-delay: 1s; transform: translateX(12px); }
+        @keyframes sprayHearts { 0% { transform: translate(-50%, 0) scale(0); opacity: 1; } 50% { opacity: 0.8; } 100% { transform: translate(var(--tx, 0), -50px) scale(1.5); opacity: 0; } }
+        @keyframes liquidMove { 0%, 100% { height: 35px; transform: rotate(0deg); } 50% { height: 32px; transform: rotate(1deg); } }
 
     </style>
 </head>
@@ -358,25 +427,24 @@
     <div class="app-container">
         <!-- Header -->
         <header>
-            <div class="logo-wrapper">
-                <span class="logo-text-prefix">1O1O X </span>
-                <img src="image_3c5be7.png" alt="1O1O Logo" class="logo-img" onerror="this.style.display='none'">
-                <!-- Divider Removed -->
-                <span class="logo-artisenses">ARTISENSES</span>
-            </div>
+            <div style="flex:1;"></div>
             <div class="lang-switch" onclick="toggleLanguage()">EN / 中</div>
         </header>
 
         <!-- PAGE 1: HOME -->
         <div id="page-home" class="page active">
             <div class="hero-section">
-                <div style="font-size: 3rem; color: var(--rose-gold); margin-bottom: 20px;">
-                    <i class="fa-solid fa-spray-can-sparkles"></i>
+                <!-- Centered Logos -->
+                <div class="hero-logos">
+                    <span style="font-family:'Montserrat'; font-weight:600; font-size:1.2rem; color:#333;">1O1O X </span>
+                    <img src="image_3c5be7.png" alt="1O1O" style="height:30px;" onerror="this.style.display='none'">
+                    <span style="font-family:'Playfair Display'; font-weight:700; font-size:1.2rem; letter-spacing:1px; color:#4a3b3e;">ARTISENSES</span>
                 </div>
+                
                 <h1 class="hero-title" data-i18n="hero_title">Valentine's Limited<br>AI Perfect Match</h1>
                 <p class="hero-desc" data-i18n="hero_desc">
-                    1O1O聯乘法國第五感調香學院（香港分校）Artisenses<br>
-                    讓您為摯愛送上專屬Perfect Match 香水
+                    1O1O x Artisenses (HK)<br>
+                    Gift your loved one a perfect bespoke scent match.
                 </p>
             </div>
             <button class="cta-btn" onclick="nextPage('page-input')">
@@ -386,13 +454,15 @@
 
         <!-- PAGE 2: INPUT -->
         <div id="page-input" class="page">
+            <div style="text-align:center; margin-bottom:40px;"></div>
+            
             <div class="input-group">
-                <label class="input-label"><span data-i18n="label_name_zh">Chinese Name</span> <span style="color:red">*</span></label>
-                <input type="text" id="chineseName" placeholder="e.g. 陳大文">
+                <label class="input-label"><span data-i18n="label_name_zh">Chinese Name</span> *</label>
+                <input type="text" id="chineseName" placeholder="">
             </div>
 
             <div class="input-group">
-                <label class="input-label"><span data-i18n="label_gender">Gender</span> <span style="color:red">*</span></label>
+                <label class="input-label"><span data-i18n="label_gender">Gender</span> *</label>
                 <div class="radio-group">
                     <label class="radio-label">
                         <input type="radio" name="gender" value="M"> <span data-i18n="gender_m">Male</span>
@@ -405,7 +475,7 @@
 
             <div class="input-group">
                 <label class="input-label" data-i18n="label_birth">Birthday</label>
-                <div style="display:flex; gap:15px;">
+                <div style="display:flex; gap:20px;">
                     <select id="birthMonth" onchange="updateDays()"></select>
                     <select id="birthDay"></select>
                 </div>
@@ -425,10 +495,17 @@
             </button>
         </div>
 
-        <!-- PAGE 3: LOADING - HIDDEN LOGICALLY BUT KEPT IN DOM FOR STRUCTURE -->
-        <div id="page-loading" class="page loading-container" style="display:none;">
-            <div class="spinner"></div>
-            <p style="font-size:1rem; color:#888; letter-spacing:1px;" data-i18n="loading_msg">Customizing Formula...</p>
+        <!-- PAGE 3: LOADING (Transition only) -->
+        <div id="page-loading" class="page loading-container">
+            <div class="perfume-loader-container">
+                <div class="spray-nozzle"></div>
+                <div class="perfume-cap"></div>
+                <div class="perfume-bottle"></div>
+                <i class="fa-solid fa-heart heart-particle hp-1" style="--tx: -20px;"></i>
+                <i class="fa-solid fa-heart heart-particle hp-2" style="--tx: 0px;"></i>
+                <i class="fa-solid fa-heart heart-particle hp-3" style="--tx: 20px;"></i>
+            </div>
+            <p style="margin-top: 20px; letter-spacing: 2px; font-size: 0.9rem; color: #555;">Loading...</p>
         </div>
 
         <!-- PAGE 4: RESULT -->
@@ -437,15 +514,15 @@
                 <h1 class="user-name-display" id="res-name">User</h1>
             </div>
 
-            <!-- Scent Meaning (Replaces Personality) -->
+            <!-- Scent Meaning -->
             <div class="content-block">
                 <span class="block-title" data-i18n="title_meaning">Scent Meaning</span>
                 <div id="res-meaning" class="meaning-text"></div>
             </div>
 
-            <!-- Single Result (No A/B) -->
-            <div class="content-block">
-                <span class="block-title" data-i18n="title_formula">Perfect Match Formula</span>
+            <!-- Single Result Formula -->
+            <div class="content-block" style="border: 2px solid var(--primary-rose); background: #fff;">
+                <span class="block-title" data-i18n="title_formula">Exclusive Scent</span>
                 <div id="res-product">
                     <!-- Product Content -->
                 </div>
@@ -453,33 +530,44 @@
 
             <!-- Confirm Button -->
             <button class="cta-btn" id="btn-confirm" onclick="confirmSelection()">
-                <span data-i18n="btn_confirm">Confirm & Get Code</span>
+                <span data-i18n="btn_confirm">Get Pickup Code</span>
             </button>
-
-            <!-- T&C -->
-            <div class="footer-note" data-i18n="terms_text">All information provided is for reference only.</div>
-
-            <!-- Restart Button -->
-            <button class="cta-btn secondary" onclick="resetApp()" style="margin-top:10px;">
-                <span data-i18n="btn_restart">Start Over</span>
+            
+            <!-- Regenerate Button -->
+            <button class="cta-btn secondary" onclick="regenerateResult()">
+                <span data-i18n="btn_regenerate">Regenerate</span>
             </button>
+            
+            <!-- T&C Section -->
+             <div class="terms-note">
+                <span data-i18n="terms_limit" style="color: var(--deep-rose); font-weight: 600;">Each customer is limited to one participation and one bottle of perfume only. Offer valid while stocks last.</span><br><br>
+                <span data-i18n="terms_privacy_1">We will not transfer your data to any third party unless authorized by you or required by law.</span><br><br>
+                <span data-i18n="terms_privacy_2">Your personal data will be permanently deleted from our servers within 7 days after the event ends or collection date.</span><br><br>
+                <span data-i18n="terms_text">All information provided is for reference only.</span>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <a href="#" onclick="resetApp()" style="color:#aaa; font-size:0.8rem; text-decoration:none;">
+                    <i class="fa-solid fa-house"></i> <span data-i18n="btn_home">Back to Home</span>
+                </a>
+            </div>
         </div>
 
         <!-- PAGE 5: SUCCESS -->
         <div id="page-success" class="page" style="justify-content:center; align-items:center; text-align:center;">
-            <div style="font-size: 4rem; color: #4CAF50; margin-bottom: 20px;">
-                <i class="fa-solid fa-circle-check"></i>
+            <div style="font-size: 3rem; color: var(--primary-rose); margin-bottom: 20px;">
+                <i class="fa-regular fa-circle-check"></i>
             </div>
-            <h2 style="font-family:'Playfair Display'; color:var(--deep-red); font-size:2rem; margin-bottom:10px;" data-i18n="thank_you">Thank You!</h2>
+            <h2 style="font-family:'Playfair Display'; color:var(--text-main); font-size:2rem; margin-bottom:10px;" data-i18n="thank_you">Thank You!</h2>
             
-            <p style="font-size:1rem; color:#666;" data-i18n="pickup_label">Your Pickup Code:</p>
+            <p style="font-size:0.9rem; color:#888; letter-spacing:1px;" data-i18n="pickup_label">PICKUP CODE</p>
             <div class="pickup-code-box">
                 <div class="pickup-code" id="final-code">000</div>
             </div>
             
-            <p style="font-size:0.9rem; color:#999;" data-i18n="success_note">Please show this code to our staff.</p>
+            <p style="font-size:0.85rem; color:#666;" data-i18n="success_note">Please show this code to our staff.</p>
             
-            <button class="cta-btn secondary" onclick="resetApp()" style="margin-top:40px;">
+            <button class="cta-btn secondary" onclick="resetApp()" style="margin-top:50px;">
                 <span data-i18n="btn_home">Back to Home</span>
             </button>
         </div>
@@ -487,11 +575,11 @@
 
     <script>
         // --- CONFIGURATION ---
-        // !!! PASTE YOUR GOOGLE WEB APP URL HERE !!!
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqY0N1isGOn_NmLT4MckCZPjpGFTD8RxrmTu3ggthEHL5eQ8j1--oBpn5Q7QhAbVdM_g/exec"; 
         
         let currentLang = 'zh';
         let lastResult = null;
+        let lastInputData = null;
 
         // --- DATA ---
         const locations = [
@@ -503,7 +591,7 @@
         // UPDATED PERFUME DATABASE
         const perfumeDatabase = [
             {
-                id: "p1",
+                id: "A",
                 gender: "F",
                 name_en: "A. Bamboo Rose Veil", name_zh: "A. Bamboo Rose Veil",
                 desc_en: "A soft, airy rose wrapped in fresh green dew. Honeyed Bulgarian rose and lychee melt into crisp green grass and cool mist for an elegant, romantic finish.",
@@ -514,7 +602,7 @@
                 meaning_en: "Gentle • Graceful • Effortlessly elegant", meaning_zh: "溫柔 • 優雅 • 自然迷人"
             },
             {
-                id: "p2",
+                id: "B",
                 gender: "F",
                 name_en: "B. Rosewood Serenity", name_zh: "B. Rosewood Serenity",
                 desc_en: "Fresh green calm with a touch of rose. Dewy grass and bamboo air lead, softened by delicate rose, lychee, and honey for a clean, soothing experience.",
@@ -525,7 +613,7 @@
                 meaning_en: "Peaceful • Grounded • Quietly confident", meaning_zh: "平靜 • 穩重 • 低調自信"
             },
             {
-                id: "p3",
+                id: "C",
                 gender: "F",
                 name_en: "C. Oud Rose Royale", name_zh: "C. Oud Rose Royale",
                 desc_en: "Luxurious rose warmed by golden spice. Rich rose oils and honeyed lychee glow against saffron spiced oud for a bold, sensual impression.",
@@ -536,7 +624,7 @@
                 meaning_en: "Confident • Expressive • Captivating", meaning_zh: "自信 • 大膽 • 迷人吸引"
             },
             {
-                id: "p4",
+                id: "D",
                 gender: "F",
                 name_en: "D. Velvet Oud Bloom", name_zh: "D. Velvet Oud Bloom",
                 desc_en: "Smooth spice softened by floral depth. Golden saffron and warm spices unfold into velvety rose, refined and quietly powerful.",
@@ -547,7 +635,7 @@
                 meaning_en: "Sophisticated • Composed • Quietly powerful", meaning_zh: "成熟 • 冷靜 • 內斂強大"
             },
             {
-                id: "p5",
+                id: "E",
                 gender: "M", 
                 name_en: "E. Bamboo Oud Horizon", name_zh: "E. Bamboo Oud Horizon",
                 desc_en: "Fresh green clarity meets gentle spice. Cool dewy grass opens the scent, grounded by soft saffron warmth for a modern, clean finish.",
@@ -558,7 +646,7 @@
                 meaning_en: "Clean cut • Thoughtful • Modern minimalist", meaning_zh: "乾淨俐落 • 沉穩 • 現代感"
             },
             {
-                id: "p6",
+                id: "F",
                 gender: "M",
                 name_en: "F. Smoked Bamboo Oud", name_zh: "F. Smoked Bamboo Oud",
                 desc_en: "Deep spice sharpened by fresh green air. Glowing saffron and warm spice are lifted by crisp grass and mist, bold yet balanced.",
@@ -575,7 +663,7 @@
                 hero_title: "情人節限定<br>AI Perfect Match",
                 hero_desc: "1O1O聯乘法國第五感調香學院（香港分校）Artisenses<br>讓您為摯愛送上專屬Perfect Match 香水",
                 btn_start: "開始調製香水",
-                input_title: "1O1O X ARTISENSES",
+                input_title: "AI命定調香",
                 label_name_zh: "中文姓名",
                 label_gender: "性別",
                 label_birth: "出生日期",
@@ -587,13 +675,15 @@
                 title_formula: "專屬配方",
                 btn_restart: "重新生成",
                 btn_confirm: "確認並獲取編號",
-                footer_note: "自選香味請向現場活動人員查詢。",
+                btn_regenerate: "重新生成結果",
+                terms_limit: "每位客戶僅限參與製作活動一次，並只限獲取香水乙支。數量有限，送完即止。",
                 terms_text: "本平台所提供之所有資訊僅供參考。",
+                terms_privacy_1: "除非獲得閣下同意或法律要求，否則我們不會將閣下資料轉移給任何第三方。",
+                terms_privacy_2: "閣下的個人資料將於活動結束後或收集日起計 7 日內 從我們的伺服器中永久刪除。",
                 thank_you: "謝謝您的參與！",
                 pickup_label: "您的取件編號：",
                 success_note: "請向現場工作人員出示此編號。",
                 btn_home: "返回首頁",
-                loading_msg: "正在為您調製...",
                 lbl_ratio: "比例:",
                 lbl_color: "色調:",
                 lbl_pers: "性格:",
@@ -602,7 +692,7 @@
                 hero_title: "Valentine's Limited<br>AI Perfect Match",
                 hero_desc: "1O1O x Artisenses (HK)<br>Gift your loved one a perfect bespoke scent match.",
                 btn_start: "Start Blending",
-                input_title: "1O1O X ARTISENSES",
+                input_title: "AI Destiny Scent",
                 label_name_zh: "Chinese Name",
                 label_gender: "Gender",
                 label_birth: "Birth Date",
@@ -611,16 +701,18 @@
                 gender_f: "Female",
                 btn_analyze: "AI Analyze",
                 title_meaning: "Scent Meaning",
-                title_formula: "Your Formula",
+                title_formula: "Exclusive Scent",
                 btn_restart: "Start Over",
-                btn_confirm: "Confirm & Get Code",
-                footer_note: "Please ask staff for custom scent options.",
+                btn_regenerate: "Regenerate Result",
+                btn_confirm: "Get Pickup Code",
+                terms_limit: "Each customer is limited to one participation and one bottle of perfume only. Offer valid while stocks last.",
                 terms_text: "All information provided is for reference only.",
+                terms_privacy_1: "We will not transfer your data to any third party unless authorized by you or required by law.",
+                terms_privacy_2: "Your personal data will be permanently deleted from our servers within 7 days after the event ends or collection date.",
                 thank_you: "Thank You!",
                 pickup_label: "Your Pickup Code:",
                 success_note: "Please show this code to our staff.",
                 btn_home: "Back to Home",
-                loading_msg: "Customizing Formula...",
                 lbl_ratio: "Blend:",
                 lbl_color: "Color Tone:",
                 lbl_pers: "Personality:",
@@ -694,6 +786,7 @@
         function nextPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function resetApp() {
@@ -703,20 +796,18 @@
             document.getElementById('birthMonth').selectedIndex = 0;
             updateDays();
             lastResult = null;
+            lastInputData = null;
             document.getElementById('btn-confirm').disabled = false;
             document.getElementById('btn-confirm').innerHTML = `<span data-i18n="btn_confirm">${i18n[currentLang].btn_confirm}</span>`;
             nextPage('page-home');
         }
 
-        // --- CORE LOGIC ---
+        // --- LOGIC ---
         function processCalculation() {
-            // No English name input
-            const nameEn = ""; 
             const nameZh = document.getElementById('chineseName').value.trim();
             const month = parseInt(document.getElementById('birthMonth').value);
             const day = parseInt(document.getElementById('birthDay').value);
             const locId = document.getElementById('activityLocation').value;
-            
             const genderEl = document.querySelector('input[name="gender"]:checked');
 
             if(!nameZh || !genderEl) {
@@ -725,39 +816,42 @@
             }
 
             const gender = genderEl.value;
-
-            // Direct calculation without loading page
-            calculateAndShow(nameEn, nameZh, gender, month, day, locId);
+            
+            lastInputData = { nameZh, gender, month, day, locId };
+            
+            // Show Loading Page with Text for 2.5s transition
+            nextPage('page-loading');
+            
+            setTimeout(() => {
+                calculateAndShow(nameZh, gender, month, day, locId);
+            }, 2500); 
+        }
+        
+        function regenerateResult() {
+            if(lastInputData) {
+                nextPage('page-loading');
+                setTimeout(() => {
+                    calculateAndShow(lastInputData.nameZh, lastInputData.gender, lastInputData.month, lastInputData.day, lastInputData.locId);
+                }, 2000);
+            }
         }
 
-        function calculateAndShow(nameEn, nameZh, gender, month, day, locId) {
-            // 1. Five Elements Logic (Hidden calculation)
-            let birthElement = '';
-            if (month >= 2 && month <= 4) birthElement = 'wood';
-            else if (month >= 5 && month <= 7) birthElement = 'fire';
-            else if (month >= 8 && month <= 10) birthElement = 'metal';
-            else birthElement = 'water';
-            if ((month===4||month===7||month===10||month===1) && day > 18) birthElement = 'earth';
+        function calculateAndShow(nameZh, gender, month, day, locId) {
+            // Random Perfume Selection (Single)
+            let genderPool = perfumeDatabase.filter(p => p.gender === gender);
+            if(genderPool.length === 0) genderPool = perfumeDatabase;
 
-            // 2. Select Perfume based on Gender
-            // Filter database
-            let availablePerfumes = perfumeDatabase.filter(p => p.gender === gender);
-            // Fallback to all if somehow empty
-            if(availablePerfumes.length === 0) availablePerfumes = perfumeDatabase;
+            const randomPerfume = genderPool[Math.floor(Math.random() * genderPool.length)];
 
-            // Randomly pick ONE
-            const randomPerfume = availablePerfumes[Math.floor(Math.random() * availablePerfumes.length)];
-
-            // Resolve location name
+            // Resolve location
             const locObj = locations.find(l => l.id === locId);
-            
+
             lastResult = {
-                nameEn: nameEn, // Will be empty string
                 nameZh,
                 gender,
                 birthDate: `${month}/${day}`,
-                birthElement, // Stored but not shown
                 perfume: randomPerfume,
+                locId: locId, // Store specific location ID
                 locationZh: locObj ? locObj.zh : locId,
                 locationEn: locObj ? locObj.en : locId
             };
@@ -767,7 +861,6 @@
         }
 
         function renderResult(data) {
-            // Display Chinese name as the user name
             document.getElementById('res-name').innerText = data.nameZh;
             
             const p = data.perfume;
@@ -786,27 +879,20 @@
             // Render Meaning (Scent Meaning)
             document.getElementById('res-meaning').innerHTML = `"${pMeaning}"`;
 
-            // Render Product
+            // Render Product (Single)
             document.getElementById('res-product').innerHTML = `
                 <div class="product-item">
                     <span class="product-name">${pName}</span>
                     <span class="product-desc">${pDesc}</span>
                     <div class="product-meta">
-                        <div class="meta-row">
-                            <span class="meta-label">${lblRatio}</span>
-                            <span class="meta-value">${pBlend}</span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label">${lblColor}</span>
-                            <span class="meta-value">${pColor}</span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label">${lblPers}</span>
-                            <span class="meta-value">${pPers}</span>
-                        </div>
+                        <div class="meta-row"><span class="meta-label">${lblRatio}</span><span>${pBlend}</span></div>
+                        <div class="meta-row"><span class="meta-label">${lblColor}</span><span>${pColor}</span></div>
+                        <div class="meta-row"><span class="meta-label">${lblPers}</span><span>${pPers}</span></div>
                     </div>
                 </div>
             `;
+            
+            document.getElementById('btn-confirm').disabled = false;
         }
 
         function confirmSelection() {
@@ -818,16 +904,19 @@
             btn.disabled = true;
 
             const locationStr = currentLang === 'zh' ? lastResult.locationZh : lastResult.locationEn;
+            
+            // Use stored locId (TKO, ST, TST) for correct code generation
+            const locCode = lastResult.locId; 
+
             const perfumeName = currentLang === 'zh' ? lastResult.perfume.name_zh : lastResult.perfume.name_en;
 
             const payload = {
-                name_en: "",
                 name_zh: lastResult.nameZh,
                 gender: lastResult.gender,
                 birth: lastResult.birthDate,
                 scent: perfumeName,
-                element: lastResult.birthElement, // sending hidden element data for record
-                location: locationStr
+                location: locationStr,
+                loc_code: locCode
             };
 
             submitToGoogleSheet(payload, btn, originalText);
@@ -835,27 +924,34 @@
 
         function submitToGoogleSheet(data, btn, originalText) {
             if(!GOOGLE_SCRIPT_URL) {
-                console.warn("No Google Script URL. Simulating success.");
-                setTimeout(() => { showSuccessPage("999"); }, 1000);
+                // Demo fallback: Force show correct ID format
+                setTimeout(() => { 
+                    const mockId = (data.loc_code || "GEN") + "_088";
+                    showSuccessPage(mockId); 
+                }, 1000);
                 return;
             }
 
-            const url = `${GOOGLE_SCRIPT_URL}?name_en=${encodeURIComponent(data.name_en)}&name_zh=${encodeURIComponent(data.name_zh)}&gender=${encodeURIComponent(data.gender)}&birth=${encodeURIComponent(data.birth)}&scent=${encodeURIComponent(data.scent)}&element=${encodeURIComponent(data.element)}&location=${encodeURIComponent(data.location)}`;
+            const url = `${GOOGLE_SCRIPT_URL}?name_zh=${encodeURIComponent(data.name_zh)}&gender=${encodeURIComponent(data.gender)}&birth=${encodeURIComponent(data.birth)}&scent=${encodeURIComponent(data.scent)}&location=${encodeURIComponent(data.location)}&loc_code=${encodeURIComponent(data.loc_code)}`;
 
             fetch(url, { method: "GET" })
             .then(response => response.json())
             .then(result => {
                 if(result.result === 'success') {
-                    showSuccessPage(result.id); 
+                    // Safety check: if backend returns just number "001", prepend prefix
+                    let displayId = result.id;
+                    if (data.loc_code && String(displayId).indexOf(data.loc_code) === -1) {
+                        displayId = data.loc_code + "_" + displayId;
+                    }
+                    showSuccessPage(displayId); 
                 } else {
                     console.error("Script Error:", result.error);
-                    showSuccessPage("Error-999"); 
+                    showSuccessPage("Error"); 
                 }
             })
             .catch(error => {
                 console.error("Fetch Error:", error);
-                // Fallback for demo/error
-                showSuccessPage("Offline-001"); 
+                showSuccessPage("Offline"); 
             });
         }
 
@@ -863,6 +959,7 @@
             document.getElementById('final-code').innerText = code;
             nextPage('page-success');
         }
+
     </script>
 </body>
 </html>
